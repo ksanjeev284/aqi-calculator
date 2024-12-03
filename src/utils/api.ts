@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { AQIData, AQIFilters, APIResponse, APIRecord } from '../types/aqi';
 
-const API_KEY = '579b464db66ec23bdd0000016b2275c5279541bd65f84f39c871b5d3';
-const BASE_URL = 'https://api.data.gov.in/resource/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69';
+const API_KEY = import.meta.env.VITE_API_KEY;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const api = axios.create({
   timeout: 15000,
