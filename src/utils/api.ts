@@ -4,6 +4,10 @@ import { AQIData, AQIFilters, APIResponse, APIRecord } from '../types/aqi';
 const API_KEY = import.meta.env.VITE_API_KEY;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+if (!API_KEY || !BASE_URL) {
+  console.error('Environment variables are not properly configured. Please check your .env file or environment settings.');
+}
+
 const api = axios.create({
   timeout: 15000,
 });
