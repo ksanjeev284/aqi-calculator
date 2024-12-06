@@ -5,13 +5,15 @@ interface SEOProps {
   description: string;
   canonicalUrl?: string;
   cityName?: string;
+  keywords?: string;
 }
 
 export const SEO: React.FC<SEOProps> = ({ 
   title, 
   description, 
   canonicalUrl,
-  cityName 
+  cityName,
+  keywords
 }) => {
   const baseUrl = import.meta.env.VITE_BASE_URL || 'https://yourdomain.com';
   const fullUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
@@ -20,6 +22,7 @@ export const SEO: React.FC<SEOProps> = ({
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
+      {keywords && <meta name="keywords" content={keywords} />}
       <link rel="canonical" href={fullUrl} />
       
       {/* Open Graph / Facebook */}
@@ -41,6 +44,9 @@ export const SEO: React.FC<SEOProps> = ({
           "@type": "WebPage",
           "name": title,
           "description": description,
+          ...(keywords && {
+            "keywords": keywords.split(',').map(k => k.trim())
+          }),
           ...(cityName && {
             "about": {
               "@type": "City",
@@ -51,4 +57,4 @@ export const SEO: React.FC<SEOProps> = ({
       </script>
     </Helmet>
   );
-}; 
+};
