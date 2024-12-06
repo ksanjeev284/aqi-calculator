@@ -6,9 +6,10 @@ import { AQIData } from '../types/aqi';
 
 interface AQICardProps {
   data: AQIData;
+  onClick?: (city: string) => void;
 }
 
-export const AQICard: React.FC<AQICardProps> = ({ data }) => {
+export const AQICard: React.FC<AQICardProps> = ({ data, onClick }) => {
   const [isDateError, setIsDateError] = useState(false);
 
   const getAQILevel = (value: number) => {
@@ -33,8 +34,20 @@ export const AQICard: React.FC<AQICardProps> = ({ data }) => {
   const formattedMin = isNaN(data.minValue) ? 'N/A' : Math.round(data.minValue).toString();
   const formattedMax = isNaN(data.maxValue) ? 'N/A' : Math.round(data.maxValue).toString();
 
+  const handleClick = () => {
+    if (onClick) {
+      onClick(data.city);
+    }
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+    <div 
+      className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md cursor-pointer hover:shadow-xl transition-shadow duration-200"
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      aria-label={`View charts for ${data.city}`}
+    >
       <div className="flex justify-between items-center mb-4">
         <div>
           <h2 className="text-xl font-bold text-gray-800">{data.city}</h2>
@@ -52,30 +65,32 @@ export const AQICard: React.FC<AQICardProps> = ({ data }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mt-6">
+      <div className="grid grid-cols-2 gap-4 mb-4">
         <div className="flex items-center">
-          <ArrowDown className="w-5 h-5 text-blue-500 mr-2" />
+          <ArrowDown className="w-4 h-4 text-blue-500 mr-2" />
           <div>
-            <div className="text-sm text-gray-500">Min Value</div>
-            <div className="font-medium">{formattedMin} {data.unit}</div>
+            <div className="text-sm text-gray-500">Min</div>
+            <div className="font-semibold">{formattedMin}</div>
           </div>
         </div>
         <div className="flex items-center">
-          <ArrowUp className="w-5 h-5 text-red-500 mr-2" />
+          <ArrowUp className="w-4 h-4 text-red-500 mr-2" />
           <div>
-            <div className="text-sm text-gray-500">Max Value</div>
-            <div className="font-medium">{formattedMax} {data.unit}</div>
+            <div className="text-sm text-gray-500">Max</div>
+            <div className="font-semibold">{formattedMax}</div>
           </div>
         </div>
       </div>
 
-      <div className="mt-6 text-sm text-gray-500 text-center">
-        Last updated {formatLastUpdated(data.lastUpdated)}
-        {isDateError && (
-          <div className="text-xs text-red-500 mt-1">
-            Unable to determine exact update time
-          </div>
-        )}
+      <div className="flex items-center justify-between text-sm text-gray-500">
+        <div className="flex items-center">
+          <Wind className="w-4 h-4 mr-1" />
+          <span>{data.state}</span>
+        </div>
+        <div className="flex items-center">
+          <Droplets className="w-4 h-4 mr-1" />
+          <span>{!isDateError ? formatLastUpdated(data.lastUpdated) : 'Time unavailable'}</span>
+        </div>
       </div>
     </div>
   );

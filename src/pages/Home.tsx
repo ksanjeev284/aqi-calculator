@@ -6,12 +6,12 @@ import { AQIFilters as AQIFiltersType } from '../types/aqi';
 import { Loader2 } from 'lucide-react';
 import { AQICard } from '../components/AQICard';
 import { STATES } from '../types/aqi';
-import { useNavigate } from 'react-router-dom';
+import { AQICharts } from '../components/AQICharts';
 
 export const Home = () => {
   const [filters, setFilters] = useState<AQIFiltersType>({});
   const [showCharts, setShowCharts] = useState(false);
-  const navigate = useNavigate();
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
   const { data: aqiData, isLoading, error } = useQuery({
     queryKey: ['aqi', filters],
@@ -27,8 +27,17 @@ export const Home = () => {
     }));
   };
 
-  const handleShowCharts = () => {
-    navigate('/city/delhi');
+  const toggleCharts = () => {
+    setShowCharts(prev => !prev);
+    if (!showCharts) {
+      setSelectedCity(null);
+    }
+  };
+
+  const handleCityCardClick = (city: string) => {
+    setSelectedCity(city);
+    setShowCharts(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -41,100 +50,92 @@ export const Home = () => {
         <div className="flex justify-between items-center py-4">
           <h1 className="text-2xl font-bold">AQI Calculator</h1>
           <button 
-            onClick={handleShowCharts}
+            onClick={toggleCharts}
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors"
-            aria-label="View Air Quality Index charts"
+            aria-label="Toggle Air Quality Index charts"
           >
-            Show Charts
+            {showCharts ? 'Hide Charts' : 'Show Charts'}
           </button>
         </div>
 
-        <h2 className="text-3xl font-bold text-center my-6">
-          India AQI Monitor
-        </h2>
-        
+        {/* Charts Section */}
+        {showCharts && (
+          <div className="mb-8">
+            <AQICharts initialCity={selectedCity || filters.city} />
+            {selectedCity && (
+              <div className="text-center mt-4">
+                <p className="text-lg font-semibold">Showing charts for {selectedCity}</p>
+                <button
+                  onClick={() => setSelectedCity(null)}
+                  className="text-blue-500 hover:text-blue-700 mt-2"
+                >
+                  Clear city selection
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Filters Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <select
-            id="state-filter"
-            aria-label="Filter by state"
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             value={filters.state || ''}
             onChange={(e) => handleFilterChange('state', e.target.value)}
+            className="p-2 border rounded-md"
+            aria-label="Filter by state"
           >
             <option value="">All States</option>
-            {STATES.map((state: string) => (
-              <option key={state} value={state}>
-                {state.replace('_', ' ')}
-              </option>
+            {STATES.map(state => (
+              <option key={state} value={state}>{state}</option>
             ))}
           </select>
 
           <select
-            id="pollutant-filter"
-            aria-label="Filter by pollutant type"
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            value={filters.parameter || ''}
-            onChange={(e) => handleFilterChange('parameter', e.target.value)}
-          >
-            <option value="">All Pollutants</option>
-            <option value="SO2">SO2</option>
-            <option value="CO">CO</option>
-            <option value="OZONE">Ozone</option>
-          </select>
-
-          <input
-            type="text"
-            id="city-filter"
-            placeholder="Filter by city..."
-            aria-label="Filter by city name"
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             value={filters.city || ''}
             onChange={(e) => handleFilterChange('city', e.target.value)}
-          />
+            className="p-2 border rounded-md"
+            aria-label="Filter by city"
+          >
+            <option value="">All Cities</option>
+            {Array.from(new Set(aqiData?.map(d => d.city) || [])).sort().map(city => (
+              <option key={city} value={city}>{city}</option>
+            ))}
+          </select>
 
-          <input
-            type="text"
-            id="station-filter"
-            placeholder="Filter by station..."
-            aria-label="Filter by monitoring station"
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            value={filters.station || ''}
-            onChange={(e) => handleFilterChange('station', e.target.value)}
-          />
+          <select
+            value={filters.parameter || ''}
+            onChange={(e) => handleFilterChange('parameter', e.target.value)}
+            className="p-2 border rounded-md"
+            aria-label="Filter by parameter"
+          >
+            <option value="">All Parameters</option>
+            {Array.from(new Set(aqiData?.map(d => d.parameter) || [])).sort().map(param => (
+              <option key={param} value={param}>{param}</option>
+            ))}
+          </select>
         </div>
 
-        {/* Loading State */}
-        {isLoading && (
-          <div className="flex justify-center items-center h-48">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+        {/* AQI Cards Section */}
+        {isLoading ? (
+          <div className="flex justify-center items-center min-h-[200px]">
+            <Loader2 className="w-8 h-8 animate-spin" />
           </div>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <div className="text-center text-red-500 p-4 bg-red-50 rounded-lg mb-6">
-            {error instanceof Error ? error.message : 'An error occurred while fetching AQI data'}
+        ) : error ? (
+          <div className="text-red-500 text-center py-4">
+            Error loading AQI data. Please try again later.
           </div>
-        )}
-
-        {/* Data Display */}
-        {aqiData && (
-          <div>
-            <div className="text-gray-600 mb-4">
-              Showing {aqiData.length} monitoring stations
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {aqiData.map((data, index) => (
-                <AQICard 
-                  key={`${data.city}-${data.station}-${data.parameter}-${index}`} 
-                  data={data} 
-                />
-              ))}
-            </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {aqiData?.map((data, index) => (
+              <AQICard 
+                key={`${data.city}-${data.parameter}-${index}`} 
+                data={data}
+                onClick={handleCityCardClick}
+              />
+            ))}
           </div>
         )}
       </div>
     </>
   );
-}; 
+};
