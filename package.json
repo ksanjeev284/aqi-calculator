@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p tsconfig.node.json && vite build",
+    "build": "tsc && vite build && npm run generate:sitemap && npm run generate:robots",
+    "generate:sitemap": "node src/scripts/generateStaticSitemap.js",
+    "generate:robots": "node src/scripts/generateRobots.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "prebuild": "tsc --project tsconfig.node.json"

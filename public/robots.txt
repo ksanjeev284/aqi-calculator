@@ -3,4 +3,4 @@ Allow: /
 Allow: /city/
 Disallow: /api/
 
-Sitemap: https://indianaqichecker.netlify.app/sitemap.xml 
+Sitemap: https://indianaqichecker.netlify.app/sitemap.xml

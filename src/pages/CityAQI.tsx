@@ -4,7 +4,15 @@ import { AQICharts } from '../components/AQICharts';
 import { INDIAN_CITIES } from '../utils/constants';
 import { ArrowLeft } from 'lucide-react';
 
-export const CityAQI = () => {
+interface CityAQIProps {
+  metaTitle?: string;
+  metaDescription?: string;
+}
+
+export const CityAQI: React.FC<CityAQIProps> = ({ 
+  metaTitle,
+  metaDescription 
+}) => {
   const { cityName } = useParams();
   const navigate = useNavigate();
   const city = INDIAN_CITIES.find(c => 
@@ -15,8 +23,8 @@ export const CityAQI = () => {
     return <Navigate to="/" replace />;
   }
 
-  const title = `${city.label} Air Quality Index (AQI) - Live Air Pollution Levels`;
-  const description = `Monitor real-time Air Quality Index (AQI) in ${city.label}. Get detailed pollution data, health recommendations, and historical air quality trends for ${city.label}, India.`;
+  const title = metaTitle || `${city.label} Air Quality Index (AQI) - Live Air Pollution Levels`;
+  const description = metaDescription || `Monitor real-time Air Quality Index (AQI) in ${city.label}. Get detailed pollution data, health recommendations, and historical air quality trends for ${city.label}, India.`;
 
   return (
     <>
