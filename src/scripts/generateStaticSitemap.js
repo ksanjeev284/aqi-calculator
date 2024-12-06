@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '../../');
 
-const BASE_URL = 'https://aqi-calculator.netlify.app';
+const BASE_URL = 'https://indianaqichecker.netlify.app';
 const PUBLIC_DIR = path.join(projectRoot, 'public');
 
 const INDIAN_CITIES = [
