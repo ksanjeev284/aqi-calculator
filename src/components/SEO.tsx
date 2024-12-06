@@ -13,7 +13,7 @@ export const SEO: React.FC<SEOProps> = ({
   canonicalUrl,
   cityName 
 }) => {
-  const baseUrl = import.meta.env.VITE_BASE_URL || 'https://yourdomain.com';
+  const baseUrl = import.meta.env.VITE_BASE_URL || 'https://indianaqichecker.netlify.app';
   const fullUrl = canonicalUrl ? `${baseUrl}${canonicalUrl}` : baseUrl;
   
   return (

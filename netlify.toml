@@ -1,4 +1,9 @@
 [[redirects]]
+  from = "/google*.html"
+  to = "/google:splat.html"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
@@ -6,24 +11,16 @@
 [[plugins]]
   package = "@netlify/plugin-sitemap"
 
-[[plugins]]
-  package = "@prerenderer/netlify-plugin"
-
-[plugins.inputs]
-  routes = [
-    "/",
-    "/city/delhi",
-    "/city/mumbai",
-    "/city/bangalore",
-    "/city/chennai",
-    "/city/kolkata",
-    "/city/hyderabad",
-    "/city/pune",
-    "/city/ahmedabad",
-    "/city/lucknow",
-    "/city/jaipur"
-  ]
-
 [build]
   command = "npm run build"
   publish = "dist"
+
+[build.processing]
+  skip_processing = false
+
+[build.processing.html]
+  pretty_urls = true
+
+[context.production]
+  [context.production.environment]
+    NODE_ENV = "production" 
