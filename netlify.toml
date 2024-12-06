@@ -1,0 +1,29 @@
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[plugins]]
+  package = "@netlify/plugin-sitemap"
+
+[[plugins]]
+  package = "@prerenderer/netlify-plugin"
+
+[plugins.inputs]
+  routes = [
+    "/",
+    "/city/delhi",
+    "/city/mumbai",
+    "/city/bangalore",
+    "/city/chennai",
+    "/city/kolkata",
+    "/city/hyderabad",
+    "/city/pune",
+    "/city/ahmedabad",
+    "/city/lucknow",
+    "/city/jaipur"
+  ]
+
+[build]
+  command = "npm run build"
+  publish = "dist"
