@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && node dist/scripts/generateStaticSitemap.js",
+    "build": "tsc -p tsconfig.node.json && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prebuild": "tsc --project tsconfig.node.json src/scripts/generateStaticSitemap.ts --outDir dist/scripts"
+    "prebuild": "tsc --project tsconfig.node.json"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.2",

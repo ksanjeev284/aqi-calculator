@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { INDIAN_CITIES } from '../utils/constants';
+import { INDIAN_CITIES } from '../utils/constants.js';
 
 const BASE_URL = 'https://indianaqichecker.netlify.app';
 
@@ -29,4 +29,4 @@ async function generateSitemap() {
   fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemap);
 }
 
-generateSitemap(); 
+generateSitemap();
