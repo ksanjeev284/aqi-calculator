@@ -47,8 +47,8 @@ const chartOptions = {
   },
 };
 
-export const AQICharts: React.FC = () => {
-  const [selectedCity, setSelectedCity] = useState<string>('');
+export const AQICharts: React.FC<{ initialCity?: string }> = ({ initialCity }) => {
+  const [selectedCity, setSelectedCity] = useState<string>(initialCity || '');
 
   // Fetch all AQI data without city filter
   const { data: aqiData, isLoading, error } = useQuery({
