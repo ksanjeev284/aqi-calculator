@@ -7,9 +7,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '../../');
 
-const BASE_URL = 'https://indianaqichecker.netlify.app';
-const PUBLIC_DIR = path.join(projectRoot, 'public');
-
 const INDIAN_CITIES = [
   { value: 'delhi', label: 'Delhi' },
   { value: 'mumbai', label: 'Mumbai' },
@@ -20,8 +17,51 @@ const INDIAN_CITIES = [
   { value: 'pune', label: 'Pune' },
   { value: 'ahmedabad', label: 'Ahmedabad' },
   { value: 'lucknow', label: 'Lucknow' },
-  { value: 'jaipur', label: 'Jaipur' }
+  { value: 'jaipur', label: 'Jaipur' },
+  { value: 'surat', label: 'Surat' },
+  { value: 'kanpur', label: 'Kanpur' },
+  { value: 'nagpur', label: 'Nagpur' },
+  { value: 'indore', label: 'Indore' },
+  { value: 'thane', label: 'Thane' },
+  { value: 'bhopal', label: 'Bhopal' },
+  { value: 'visakhapatnam', label: 'Visakhapatnam' },
+  { value: 'pimpri-chinchwad', label: 'Pimpri-Chinchwad' },
+  { value: 'patna', label: 'Patna' },
+  { value: 'vadodara', label: 'Vadodara' },
+  { value: 'ghaziabad', label: 'Ghaziabad' },
+  { value: 'ludhiana', label: 'Ludhiana' },
+  { value: 'agra', label: 'Agra' },
+  { value: 'nashik', label: 'Nashik' },
+  { value: 'faridabad', label: 'Faridabad' },
+  { value: 'meerut', label: 'Meerut' },
+  { value: 'rajkot', label: 'Rajkot' },
+  { value: 'kalyan-dombivli', label: 'Kalyan-Dombivli' },
+  { value: 'vasai-virar', label: 'Vasai-Virar' },
+  { value: 'varanasi', label: 'Varanasi' },
+  { value: 'srinagar', label: 'Srinagar' },
+  { value: 'aurangabad', label: 'Aurangabad' },
+  { value: 'dhanbad', label: 'Dhanbad' },
+  { value: 'amritsar', label: 'Amritsar' },
+  { value: 'navi-mumbai', label: 'Navi Mumbai' },
+  { value: 'allahabad', label: 'Allahabad' },
+  { value: 'ranchi', label: 'Ranchi' },
+  { value: 'howrah', label: 'Howrah' },
+  { value: 'coimbatore', label: 'Coimbatore' },
+  { value: 'jabalpur', label: 'Jabalpur' },
+  { value: 'gwalior', label: 'Gwalior' },
+  { value: 'vijayawada', label: 'Vijayawada' },
+  { value: 'jodhpur', label: 'Jodhpur' },
+  { value: 'madurai', label: 'Madurai' },
+  { value: 'raipur', label: 'Raipur' },
+  { value: 'kota', label: 'Kota' },
+  { value: 'chandigarh', label: 'Chandigarh' },
+  { value: 'guwahati', label: 'Guwahati' },
+  { value: 'solapur', label: 'Solapur' },
+  { value: 'hubli-dharwad', label: 'Hubli-Dharwad' }
 ];
+
+const BASE_URL = 'https://indianaqichecker.netlify.app';
+const PUBLIC_DIR = path.join(projectRoot, 'public');
 
 function generateSitemap() {
   const today = new Date().toISOString().split('T')[0];
@@ -47,7 +87,6 @@ function generateSitemap() {
   });
 
   sitemap += '\n</urlset>';
-
 
   // Ensure public directory exists
   if (!fs.existsSync(PUBLIC_DIR)) {
